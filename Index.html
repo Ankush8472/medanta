@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medanta Labs - Professional Diagnostic Services</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles & Animations -->
+    <style>
+        :root {
+            --bg-dark: #0D1117; /* The dark background from the screenshot */
+            --bg-medium: #161B22;
+            --border-color: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --brand-orange: #F97316;
+            --brand-orange-hover: #FB923C;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        /* Animated background canvas */
+        #health-animation-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.2; /* Slightly more visible on dark bg */
+        }
+
+        /* Top bar style */
+        #top-bar {
+            background-color: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        #top-bar a:hover {
+            color: var(--brand-orange-hover);
+        }
+
+        /* Header style on scroll */
+        .header-scrolled {
+            background-color: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        /* Main content wrapper to sit above the canvas */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Professional Card Style for Dark BG */
+        .pro-card {
+            background-color: var(--bg-medium);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .pro-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-color: var(--brand-orange);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background-color: var(--brand-orange);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: var(--brand-orange-hover);
+        }
+        .btn-outline {
+            border-color: var(--brand-orange);
+            color: var(--brand-orange);
+        }
+        .btn-outline:hover {
+            background-color: var(--brand-orange);
+            color: white;
+        }
+
+
+        /* Animation Keyframes */
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-on-scroll { opacity: 0; }
+        .is-visible { animation: slide-up 0.8s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Animated Background -->
+    <canvas id="health-animation-canvas"></canvas>
+
+    <div class="main-wrapper">
+        <!-- Top Bar -->
+        <div id="top-bar" class="text-xs">
+            <div class="container mx-auto px-6 py-2 flex justify-between items-center">
+                <div class="flex items-center gap-4 sm:gap-6">
+                    <a href="tel:7828662810" class="flex items-center gap-2 transition-colors">
+                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5h-1.528a13.5 13.5 0 01-11.472-11.472A1.5 1.5 0 013.5 2H5" /></svg>
+                        <span class="hidden sm:inline">7828662810</span>
+                    </a>
+                    <a href="mailto:labs@medanta.org" class="flex items-center gap-2 transition-colors">
+                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" /><path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" /></svg>
+                        <span class="hidden sm:inline">labs@medanta.org</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center gap-2">
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.1.4-.27.615-.454L16 14.8V9.854a4 4 0 00-4-4H8a4 4 0 00-4 4v4.954l5.072 3.955c.215.184.43.354.615.454a5.741 5.741 0 00.281.14l.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clip-rule="evenodd" /></svg>
+                    <span>Sajan Nagar, Chitawad, Indore</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header id="main-header" class="sticky top-0 z-40 transition-all duration-300">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="#" class="text-2xl font-bold text-text-primary flex items-center gap-2">
+                    <svg class="h-8 w-8 text-brand-orange" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-3.355a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+                    Medanta<span class="font-light text-text-secondary">Labs</span>
+                </a>
+                <nav class="hidden md:flex space-x-6 items-center text-sm font-medium">
+                    <a href="#home" class="text-text-secondary hover:text-brand-orange transition-colors">Home</a>
+                    <a href="#services" class="text-text-secondary hover:text-brand-orange transition-colors">Health Checks</a>
+                    <a href="#offers" class="text-text-secondary hover:text-brand-orange transition-colors">Offers</a>
+                    <a href="#contact" class="btn-primary px-5 py-2 rounded-md transition-colors">Book a Test</a>
+                </nav>
+                <button id="mobile-menu-button" class="md:hidden text-text-primary">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden bg-bg-medium border-t border-border-color">
+                <a href="#home" class="block py-3 px-6 text-text-secondary hover:text-brand-orange hover:bg-black/20">Home</a>
+                <a href="#services" class="block py-3 px-6 text-text-secondary hover:text-brand-orange hover:bg-black/20">Health Checks</a>
+                <a href="#offers" class="block py-3 px-6 text-text-secondary hover:text-brand-orange hover:bg-black/20">Offers</a>
+                <a href="#contact" class="block py-3 px-6 text-text-secondary hover:text-brand-orange hover:bg-black/20">Book a Test</a>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section id="home" class="flex items-center justify-center text-center relative overflow-hidden py-20 md:py-32">
+                <div class="container mx-auto px-6">
+                    <div class="max-w-4xl mx-auto">
+                        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-text-primary leading-tight animate-on-scroll" style="animation-delay: 100ms;">
+                            Take Charge of Your Health
+                        </h1>
+                        <p class="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mt-6 mb-10 animate-on-scroll" style="animation-delay: 300ms;">
+                           With Medanta's expert diagnostic services, get prompt diagnosis for a better cure.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center animate-on-scroll" style="animation-delay: 500ms;">
+                            <a href="#services" class="btn-primary text-white font-bold py-3 px-8 rounded-full text-lg inline-block transition duration-300 transform hover:scale-105">Explore Health Packages</a>
+                            <a href="#contact" class="btn-outline border-2 font-bold py-3 px-8 rounded-full text-lg inline-block transition-all duration-300 transform hover:scale-105">Find Our Center</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="services" class="py-24">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-16 animate-on-scroll">
+                        <h2 class="text-3xl md:text-4xl font-bold text-text-primary">Comprehensive Health Packages</h2>
+                        <p class="text-text-secondary mt-3 max-w-2xl mx-auto">Stay alert this season. Recognize, manage & prevent for a healthy season.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                        <!-- Example Card -->
+                        <div class="pro-card rounded-xl overflow-hidden flex flex-col animate-on-scroll">
+                            <div class="p-6 flex-grow">
+                                <h3 class="text-xl font-bold text-text-primary mb-2">Fever Panel (Basic)</h3>
+                                <ul class="text-sm text-text-secondary space-y-2 mt-4">
+                                    <li class="flex items-center gap-2"><svg class="h-4 w-4 text-brand-orange flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>Hemogram</li>
+                                    <li class="flex items-center gap-2"><svg class="h-4 w-4 text-brand-orange flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>SGOT (AST)</li>
+                                    <li class="flex items-center gap-2"><svg class="h-4 w-4 text-brand-orange flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>Urine Analysis</li>
+                                </ul>
+                            </div>
+                            <div class="p-6 bg-black/20 mt-auto">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-2xl font-bold text-brand-orange">₹650</span>
+                                    <a href="#" class="btn-outline text-sm font-semibold px-4 py-2 rounded-md border">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Other cards here... -->
+                        <div class="pro-card rounded-xl overflow-hidden flex flex-col animate-on-scroll" style="animation-delay: 100ms;">
+                            <div class="p-6 flex-grow">
+                                <h3 class="text-xl font-bold text-text-primary mb-2">Dengue Rapid Profile</h3>
+                                <ul class="text-sm text-text-secondary space-y-2 mt-4">
+                                    <li class="flex items-center gap-2"><svg class="h-4 w-4 text-brand-orange flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>Dengue IgG**</li>
+                                    <li class="flex items-center gap-2"><svg class="h-4 w-4 text-brand-orange flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>Dengue IgM</li>
+                                </ul>
+                            </div>
+                            <div class="p-6 bg-black/20 mt-auto">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-2xl font-bold text-brand-orange">₹850</span>
+                                    <a href="#" class="btn-outline text-sm font-semibold px-4 py-2 rounded-md border">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pro-card rounded-xl overflow-hidden flex flex-col animate-on-scroll" style="animation-delay: 200ms;">
+                            <div class="p-6 flex-grow">
+                                <h3 class="text-xl font-bold text-text-primary mb-2">Monsoon Fever Panel</h3>
+                                <ul class="text-sm text-text-secondary space-y-2 mt-4">
+                                    <li class="flex items-center gap-2"><svg class="h-4 w-4 text-brand-orange flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>CBC + DIFF</li>
+                                    <li class="flex items-center gap-2"><svg class="h-4 w-4 text-brand-orange flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>Liver Function Test</li>
+                                </ul>
+                            </div>
+                            <div class="p-6 bg-black/20 mt-auto">
+                               <div class="flex justify-between items-center">
+                                    <span class="text-2xl font-bold text-brand-orange">₹2100</span>
+                                    <a href="#" class="btn-outline text-sm font-semibold px-4 py-2 rounded-md border">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pro-card rounded-xl overflow-hidden flex flex-col animate-on-scroll" style="animation-delay: 300ms;">
+                            <div class="p-6 flex-grow">
+                                <h3 class="text-xl font-bold text-text-primary mb-2">MedCheck Basic</h3>
+                                <ul class="text-sm text-text-secondary space-y-2 mt-4">
+                                    <li class="flex items-center gap-2"><svg class="h-4 w-4 text-brand-orange flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>Diabetes Check</li>
+                                    <li class="flex items-center gap-2"><svg class="h-4 w-4 text-brand-orange flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>Heart Health</li>
+                                </ul>
+                            </div>
+                            <div class="p-6 bg-black/20 mt-auto">
+                               <div class="flex justify-between items-center">
+                                    <span class="text-2xl font-bold text-brand-orange">₹999</span>
+                                    <a href="#" class="btn-outline text-sm font-semibold px-4 py-2 rounded-md border">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Special Offers Section -->
+            <section id="offers" class="py-24">
+                <div class="container mx-auto px-6">
+                     <div class="text-center mb-16 animate-on-scroll">
+                        <h2 class="text-3xl md:text-4xl font-bold text-text-primary">Exclusive Offers For You</h2>
+                        <p class="text-text-secondary mt-3 max-w-2xl mx-auto">Take charge of your health with our special diagnostic services.</p>
+                    </div>
+                    <div class="pro-card rounded-xl p-8 md:p-12 animate-on-scroll">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
+                            <div class="md:border-r border-border-color md:pr-8">
+                                <h3 class="text-2xl font-bold text-brand-orange mb-2">20% OFF</h3>
+                                <p class="font-semibold text-text-primary">On All MedCheck Packages</p>
+                            </div>
+                            <div class="lg:border-r border-border-color lg:pr-8">
+                                 <h3 class="text-2xl font-bold text-brand-orange mb-2">PICK ONE FREE</h3>
+                                <p class="font-semibold text-text-primary">With Fever Panel Basic</p>
+                            </div>
+                            <div>
+                                 <h3 class="text-2xl font-bold text-brand-orange mb-2">WEEKEND OFFER</h3>
+                                <p class="font-semibold text-text-primary">Lipid Profile & HbA1c</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="py-24">
+                <div class="container mx-auto px-6">
+                    <div class="pro-card rounded-xl p-8 md:p-12 lg:p-16 animate-on-scroll">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                            <div>
+                                <h2 class="text-3xl md:text-4xl font-bold text-text-primary mb-4">Visit Our Grand Opening!</h2>
+                                <p class="text-text-secondary mb-8">Medanta cordially invites you for the Grand Opening of the Medanta Labs Collection Centre.</p>
+                                <div class="space-y-6">
+                                    <div class="flex items-start gap-4">
+                                        <div class="flex-shrink-0 w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center"><svg class="h-5 w-5 text-brand-orange" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.1.4-.27.615-.454L16 14.8V9.854a4 4 0 00-4-4H8a4 4 0 00-4 4v4.954l5.072 3.955c.215.184.43.354.615.454a5.741 5.741 0 00.281.14l.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clip-rule="evenodd" /></svg></div>
+                                        <div>
+                                            <h4 class="font-semibold text-text-primary">Venue</h4>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=13%2C+Sajan+Nagar%2C+Chitawad%2C+Indore%2C+Madhya+Pradesh" target="_blank" rel="noopener noreferrer" class="text-text-secondary hover:text-brand-orange transition-colors">
+                                                13, Sajan Nagar, Chitawad, Near Aarti Computers, Nemawar Road, Indore (M.P)
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-4">
+                                        <div class="flex-shrink-0 w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center"><svg class="h-5 w-5 text-brand-orange" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5h-1.528a13.5 13.5 0 01-11.472-11.472A1.5 1.5 0 013.5 2H5" /></svg></div>
+                                        <div>
+                                            <h4 class="font-semibold text-text-primary">Contact for Sample Collection</h4>
+                                            <a href="tel:7828662810" class="text-text-secondary text-xl font-bold hover:text-brand-orange transition-colors">7828662810</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="https://www.google.com/maps/search/?api=1&query=13%2C+Sajan+Nagar%2C+Chitawad%2C+Indore%2C+Madhya+Pradesh" target="_blank" rel="noopener noreferrer" class="h-80 lg:h-full w-full rounded-lg overflow-hidden block group">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3680.938813589953!2d75.8888963154096!3d22.69294963456046!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fd3dd68652c9%3A0x6d8594451e582846!2sSajan%20Nagar%2C%20Indore%2C%20Madhya%20Pradesh%20452001!5e0!3m2!1sen!2sin!4v1665582810842!5m2!1sen!2sin" width="100%" height="100%" style="border:0; pointer-events: none;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="grayscale group-hover:grayscale-0 transition-all duration-300"></iframe>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-bg-medium border-t border-border-color">
+            <div class="container mx-auto px-6 py-8 text-center text-sm text-text-secondary">
+                <p>&copy; 2024 Medanta Labs. All Rights Reserved. Designed with care.</p>
+            </div>
+        </footer>
+    </div>
+
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // --- Header Style on Scroll ---
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // --- Intersection Observer for Scroll Animations ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = parseFloat(entry.target.style.animationDelay) || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('is-visible');
+                    }, delay * 1000);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+        // --- Animated Canvas Background ---
+        const canvas = document.getElementById('health-animation-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const particleConfig = {
+            count: 40,
+            speed: 0.3,
+            colors: ['#f97316', '#fb923c', '#ffffff'], // Orange and white particles
+            shapes: ['circle', 'plus', 'helix']
+        };
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.5 + 1;
+                this.speedX = (Math.random() * particleConfig.speed * 2 - particleConfig.speed) / 2;
+                this.speedY = (Math.random() * particleConfig.speed * 2 - particleConfig.speed) / 2;
+                this.color = particleConfig.colors[Math.floor(Math.random() * particleConfig.colors.length)];
+                this.shape = particleConfig.shapes[Math.floor(Math.random() * particleConfig.shapes.length)];
+                this.angle = Math.random() * Math.PI * 2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                
+                if (this.shape === 'circle') {
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (this.shape === 'plus') {
+                    ctx.moveTo(this.x - this.size, this.y);
+                    ctx.lineTo(this.x + this.size, this.y);
+                    ctx.moveTo(this.x, this.y - this.size);
+                    ctx.lineTo(this.x, this.y + this.size);
+                    ctx.stroke();
+                } else if (this.shape === 'helix') {
+                    const length = 15;
+                    const amplitude = 5;
+                    for (let i = 0; i < length; i++) {
+                        const x1 = this.x + Math.sin(this.angle + i * 0.5) * amplitude;
+                        const y1 = this.y + i * 2;
+                        const x2 = this.x + Math.sin(this.angle + i * 0.5 + Math.PI) * amplitude;
+                        ctx.fillRect(x1, y1, 1, 1);
+                        ctx.fillRect(x2, y1, 1, 1);
+                    }
+                }
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < particleConfig.count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        initParticles();
+        animate();
+    </script>
+
+</body>
+</html>
